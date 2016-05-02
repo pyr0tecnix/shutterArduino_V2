@@ -1,0 +1,13 @@
+{
+	"date_fichier_config" : "26/02/16",
+	"shutter_verbosite_level" : 1,
+	"shutter_control_Mode" : "OSC" ,
+	"shutter_osc_Ip" : "192.168.0.90",
+	"shutter_osc_Port" : 8000,
+	"master_osc_Ip" : "192.168.0.50",
+	"master_osc_Port" : 9000,
+	"shutter_osc_Mac" : "0xDE:0xAD:0xBE:0xEF:0xFE:0xED",
+	"shutter_bonjour_name" : "AMshutter 01",
+	"shutter_servo_nombre" : 1,
+	"shutter_http_server_activate" : 1
+}

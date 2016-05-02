@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Shutter - Dashboard</title>
+  <meta name="description" content="Dashboard du shutter MoT">
+  <meta name="author" content="Patrice Vieyra - 2016">
+  <!-- <link rel="icon" type="image/png" href="favicon.ico" /> -->
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <!-- Fichiers Javascript
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <!-- <script type="text/javascript" src="jquery.js"></script> -->
+  <script type="text/javascript" src="shutter.js"></script>
+
+</head>
+<body onload="launchJsonRequest()">
+  <!-- <body> -->
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <div class="section home">
+    <div class="container">
+      <div class="row">
+        <div class="two column">
+          <h4 class="hero-heading">Bienvenue sur le dashboard du Shutter - MoT</h4>
+          <a class="button button-primary" href="#statut">Statut</a>
+          <a class="button button-primary" href="#controle">Contrôle</a>
+          <a class="button button-primary" href="#modifier">Modifier</a>
+          <a class="button button-primary" href="#upload">Upload</a>
+
+        </div>
+        <div class="one-half column phones"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <div class="section statut" id="statut">
+    <div class="container">
+      <div class="row">
+        <div class="one-half column value">
+          <h2 class="value-multiplier">Statut</h2>
+          <p class="value-description">Statut des différents services</p>
+          <!--Liste des services–––––––––––––––––––––––––– -->
+          <ul>
+            <li id= "statut_SD">Service SD : </li>
+            <li id = "statut_OSC">Service OSC : </li>
+            <li id = "statut_Bonjour">Service Bonjour : </li>
+          </ul>
+        </div>
+        <div class="one-third column value">
+          <h2 class="value-multiplier">Console</h2>
+          <p class="value-description">Retours texte du shutter</p>
+          <textarea class = "u-max-full-width" id = "console" rows="30" cols="120"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section controle" id = "controle">
+    <div class="container" id ="div_controle">
+      <h3 class="section-heading">Contrôle direct</h3>
+    </div>
+  </div>
+
+  <div class="section modifier" id="modifier">
+    <div class="container">
+      <h3 class="section-heading">Modifier la configuration</h3>
+      <form id="modifier_config">
+        <div class="row">
+          <div class="six columns">
+            <label for="shutter_control_Mode">Mode de contrôle</label>
+            <select class="u-full-width" id="shutter_control_Mode">
+              <option value="osc">OSC</option>
+            </select>
+            <label>Verbosité</label>
+            <select class="u-full-width" id="shutter_verbosite_level">
+              <option value="0">ERROR</option>
+              <option value="1">INFO</option>
+              <option value="2">STACK</option>
+              <option value="3">DEBUG</option>
+            </select>
+            <label>
+              <input type="checkbox" id="shutter_http_server_activate">
+              <span class="label-body">Activer le serveur HTTP</span>
+            </label>
+            <label>Nombre de servomoteurs</label>
+            <select class="u-full-width" id="shutter_servo_nombre">
+              <option value="0">1</option>
+              <option value="1">2</option>
+              <option value="2">3</option>
+              <option value="3">4</option>
+            </select>
+
+            <label for="shutter_bonjour_name">ID Bonjour</label>
+            <input type="text" class="u-full-width" placeholder="AMshutter 01" id="shutter_bonjour_name">
+
+          </div>
+          <div class="six columns">
+            <label for="shutter_osc_Mac">Adresse MAC du shutter</label>
+            <input type="text" class="u-full-width" placeholder="0xDE:0xAD:0xBE:0xEF:0xFE:0xED" id="shutter_osc_Mac">
+
+            <label for="shutter_osc_Ip">Adresse IP du shutter</label>
+            <input type="text" class="u-full-width" placeholder="192.168.0.9" id="shutter_osc_Ip">
+
+            <label for="shutter_osc_Port">Port OSC du shutter</label>
+            <input type="text" class="u-full-width" placeholder="8000" id="shutter_osc_Port">
+
+            <label for="master_osc_Ip">Adresse IP du master</label>
+            <input type="text" class="u-full-width" placeholder="192.168.0.10" id="master_osc_Ip">
+
+            <label for="master_osc_Port">Port OSC du master</label>
+            <input type="text" class="u-full-width" placeholder="9000" id="master_osc_Port">
+          </div>
+          <input class="button-primary" type="submit" value="Modifier">
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="section upload" id="upload">
+    <div class="container">
+      <h3 class="section-heading">Uploader un fichier</h3>
+      <input type="file" id = "file_to_upload">
+      <p id="p_upload"></p>
+    </div>
+  </div>
+
+  <!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
