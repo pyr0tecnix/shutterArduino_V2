@@ -1,5 +1,5 @@
 /*shutterLED.h
-Dernière modification : 01/04/16
+Dernière modification : 03/05/16
 © Patrice Vieyra - contact@magicofthings.fr
 
 Librairie ayant pour but de gérer la diode de notification
@@ -12,7 +12,12 @@ Méthodes
     - void init() : Initialise la LED de notification sur la couleur verte
     - void setCouleur(unsigned int couleur) : Fixe la couleur de la diode de notification
       à couleur. La couleur est définie par une énumération (BLACK, WHITE, RED, GREEN, BLUE)
+    - void blink() : Fait clignoter la LED de notification
 
+Attributs
+  Publiques
+
+    - Couleur _couleur : Variable contenant la couleur actuelle de la diode de notification
 */
 #ifndef shutterLED
 #define shutterLED
@@ -44,5 +49,8 @@ class ShutterLED {
 
 		static void init();
     static void setCouleur(unsigned int couleur);
+    static void blink();
+
+    static Couleur _couleur;
 };
 #endif

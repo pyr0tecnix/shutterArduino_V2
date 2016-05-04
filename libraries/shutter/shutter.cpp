@@ -1,6 +1,6 @@
 /*
 shutter.cpp
-Dernière modification : 02/05/16
+Dernière modification : 03/05/16
 © Patrice Vieyra - contact@magicofthings.fr
 
 Librairie contenant l'application shutter
@@ -79,6 +79,8 @@ void Shutter::init() {
 	/*Affichage de la configuration*/
 	ShutterConfig::print();
 
+	/*Notification visuelle de fin d'initialisation*/
+	ShutterLED::blink();
 }
 
 
