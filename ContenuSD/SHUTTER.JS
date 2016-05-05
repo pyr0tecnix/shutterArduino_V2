@@ -1,8 +1,7 @@
 /*Au chargement de la page on récupère les données*/
 function launchJsonRequest() {
+  console.log("STACK - launchJsonRequest");
   getjSonFromShutter("statut-console-formulaire");
-  /*Module l'affichage des commandes en fonction du nombre de servomoteur*/
-  setServomoteurCommandDisplay();
   /*Ajout d'un listener sur la soumission du formulaire de modification de la config*/
   var _form = document.querySelector("#modifier_config");
   _form.addEventListener("submit", function(event){
@@ -18,7 +17,9 @@ function launchJsonRequest() {
   });
 }
 
+/*Upload de fichier*/
 function uploadFile() {
+  console.log("STACK - uploadFile");
   var _input = document.querySelector("#file_to_upload");
   if(_input.files.length > 0) {
     document.querySelector("#p_upload").innerHTML = "Upload de : " + _input.files[0].name;
@@ -29,6 +30,7 @@ function uploadFile() {
 }
 
 function formModifierConfig() {
+  console.log("STACK - formModifierConfig");
   var _form = document.querySelector("#modifier_config");
   var formData = {};
   var date = new Date();
@@ -59,6 +61,7 @@ function formModifierConfig() {
 
 /*Recevoir des données de l'arduino*/
 function getjSonFromShutter(request){
+  console.log("STACK - getjSonFromShutter");
   var xhr = getXMLHttpRequest();
   xhr.open('POST', encodeURI('getdata'));
   xhr.setRequestHeader('contentType', 'application/json');
@@ -81,6 +84,7 @@ function getjSonFromShutter(request){
 
 /*Envoyer des données à l'arduino*/
 function sendJsonToShutter(request) {
+  console.log("STACK - sendJsonToShutter");
   var xhr = getXMLHttpRequest();
   xhr.open('POST', encodeURI('setdata'));
   xhr.setRequestHeader('contentType', 'application/json');
@@ -91,9 +95,12 @@ function sendJsonToShutter(request) {
 
 /*Gère l'affichage des commandes directes en fonction du nombre de servomoteur actif*/
 function setServomoteurCommandDisplay() {
+  console.log("STACK - setServomoteurCommandDisplay");
   var _divControle = document.querySelector("#div_controle");
   /*On ajoute 1 car le tableau commence à 0*/
   var nombreServomoteur = document.querySelector("#shutter_servo_nombre").options[document.querySelector("#shutter_servo_nombre").selectedIndex].text;
+  console.log(document.querySelector("#shutter_servo_nombre").options[document.querySelector("#shutter_servo_nombre").selectedIndex].text);
+
   for(cpt = 0; cpt < nombreServomoteur; cpt++) {
     var _divServo = document.createElement("div");
     _divServo.class = "three column value";
@@ -120,6 +127,7 @@ function setServomoteurCommandDisplay() {
 
 /*Fonction d'affichage du statut des différents services du shutter*/
 function handle_statut(data) {
+  console.log("STACK - handle_statut");
   var value = "";
   /*Statut SD*/
   value = data["statut_SD"] ? "OK" : "NOK";
@@ -134,6 +142,7 @@ function handle_statut(data) {
 
 /*Fonction d'affichage du retour console */
 function handle_console(data) {
+  console.log("STACK - handle_console");
   for(let element in data) {
     if(data.hasOwnProperty(element)) {
       document.querySelector("#console").innerHTML += data[element];
@@ -144,11 +153,12 @@ function handle_console(data) {
 /*Fonction permettant d'initialiser les champs du formulaire avec les valeurs
 de la configuration actuelle*/
 function handle_formulaire(data) {
+  console.log("STACK - handle_formulaire");
   for(let element in data) {
     if(data.hasOwnProperty(element)) {
       console.log(element, data[element]);
       try {
-        // console.log(document.querySelector("#" + element).type);
+        console.log(document.querySelector("#" + element).type);
         if(document.querySelector("#" + element).type == "checkbox") {
           data[element] ? document.querySelector("#" + element).checked = true : document.querySelector("#" + element).checked = false;
         }
@@ -169,13 +179,14 @@ function handle_formulaire(data) {
       }
     }
   }
+  /*Module l'affichage des commandes en fonction du nombre de servomoteur*/
+  setServomoteurCommandDisplay();
 }
-
-
 
 
 /*Fonction d'instanciation de l'objet XMLHttpRequest*/
 function getXMLHttpRequest() {
+  console.log("STACK - getXMLHttpRequest");
   var xhr = null;
 
   if (window.XMLHttpRequest || window.ActiveXObject) {
