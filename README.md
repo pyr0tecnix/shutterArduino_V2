@@ -124,7 +124,7 @@ Exemple de fichier de configuration
 	* Le shutter renvoie /shutter_pong
 
 
-## Liens intéressants ##
+## Liens intéressants
 
 * http://trippylighting.com/teensy-arduino-ect/touchosc-and-arduino-oscuino/
 * https://www.nickv.codes/blog/arduino-osc-iphone-and-dmx/
@@ -134,6 +134,7 @@ Exemple de fichier de configuration
 * http://blog.garstasio.com/you-dont-need-jquery/ajax/
 * http://starter-kit.nettigo.eu/2015/debug-sketch-on-arduino-zero-pro-with-gdb-and-openocd/
 * http://jsonviewer.stack.hu/
-### Contact ###
+
+## Contact
 
 pyrotecnix - contact@magicofthings.fr
