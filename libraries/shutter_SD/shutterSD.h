@@ -17,9 +17,15 @@ Méthodes
 		le paramètre isCritical permet d'indiquer si l'opération est critique
 		(en cas d'erreur on passe la LED de notification au rouge et on bloque l'éxecution du programme)
 		- void write(char* filename, char* data, bool isCritical) : Ecriture de data dans le fichier filename
+		Si le fichier existe il sera écrasé
 		le paramètre isCritical permet d'indiquer si l'opération est critique
 		(en cas d'erreur on passe la LED de notification au rouge et on bloque l'éxecution du programme)
 		- void write(char* filename, String data, bool isCritical) : Ecriture de data dans le fichier filename
+		Si le fichier existe il sera écrasé
+		le paramètre isCritical permet d'indiquer si l'opération est critique
+		(en cas d'erreur on passe la LED de notification au rouge et on bloque l'éxecution du programme)
+		- void write(char* filename, char** data, bool isCritical) : Ecriture des datas dans le fichier filename
+		Si le fichier existe , data sera ajouté à la suite
 		le paramètre isCritical permet d'indiquer si l'opération est critique
 		(en cas d'erreur on passe la LED de notification au rouge et on bloque l'éxecution du programme)
 
@@ -65,6 +71,7 @@ public:
 	static String read_string(char* filename, bool isCritical);
 	static void write(char* filename, char* data, bool isCritical);
 	static void write(char* filename, String data, bool isCritical);
+	static void write(char* filename, char* data[], bool isCritical);
 
 	static SdFile _file;
 	static SdFile _root;
@@ -72,7 +79,6 @@ public:
 private:
 
 	static String _read(char* filename, bool isCritical);
-	static void _write(char* filename, char* data, bool isCritical);
 
 
 };

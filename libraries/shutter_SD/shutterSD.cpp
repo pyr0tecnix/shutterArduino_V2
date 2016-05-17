@@ -21,9 +21,14 @@ Méthodes
   le paramètre isCritical permet d'indiquer si l'opération est critique
   (en cas d'erreur on passe la LED de notification au rouge et on bloque l'éxecution du programme)
   - void write(char* filename, String data, bool isCritical) : Ecriture de data dans le fichier filename
+  Si le fichier existe il sera écrasé
   le paramètre isCritical permet d'indiquer si l'opération est critique
   (en cas d'erreur on passe la LED de notification au rouge et on bloque l'éxecution du programme)
-
+  - void write(char* filename, char** data, bool isCritical) : Ecriture des datas dans le fichier filename
+  Si le fichier existe il sera écrasé
+  Si le fichier existe , data sera ajouté à la suite
+  le paramètre isCritical permet d'indiquer si l'opération est critique
+  (en cas d'erreur on passe la LED de notification au rouge et on bloque l'éxecution du programme)
   Privées
   - String _read(char* filename, bool isCritical) : Méthode appelée par read_string et read_charArray pour lire le fichier filename
   le paramètre isCritical permet d'indiquer si l'opération est critique
@@ -137,8 +142,6 @@ String ShutterSD::_read(char* filename, bool isCritical) {
 
 void ShutterSD::write(char* filename, char* data, bool isCritical) {
   ShutterSerial::print("(ShutterSD) write (char*)", STACK, true);
-  ShutterSerial::print(data, DEBUG, true);
-  ShutterSerial::print(strlen(data), DEBUG, true);
 
   if(_file.open(&_root, filename, O_WRITE | O_CREAT)) {
     _file.write(data, strlen(data));
@@ -162,8 +165,27 @@ void ShutterSD::write(char* filename, String data, bool isCritical) {
   char* data_char = new char[data.length() + 1];
   data.toCharArray(data_char, data.length() + 1);
   data_char[strlen(data_char)] = (char)0;
-  ShutterSerial::print(data_char, DEBUG, true);
-  ShutterSerial::print(data.length(), DEBUG, true);
-
   write(filename, data_char, isCritical);
+}
+
+void ShutterSD::write(char* filename, char* data[], bool isCritical) {
+  ShutterSerial::print("(ShutterSD) write (char**)", STACK, true);
+  if(_file.open(&_root, filename, O_WRITE | O_CREAT)) {
+    int cpt = 0;
+    for(cpt = 0; cpt < sizeof(data); cpt++) {
+      _file.write(data[cpt], strlen(data[cpt]));
+    }
+    _file.close();
+  }
+  else {
+    ShutterSerial::print("Erreur d'écriture du fichier ", ERROR, false);
+    ShutterSerial::print(filename, ERROR, true);
+    if(isCritical) {
+      ShutterLED::setCouleur(RED);
+      while(1);
+    }
+    else {
+      ShutterLED::setCouleur(BLUE);
+    }
+  }
 }
