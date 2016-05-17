@@ -1,5 +1,5 @@
 /*shutterSD.cpp
-Dernière modification : 01/05/16
+Dernière modification : 17/05/16
 © Patrice Vieyra - contact@magicofthings.fr
 
 Librairie ayant pour but de gérer la carte SD
@@ -72,7 +72,7 @@ public:
 private:
 
 	static String _read(char* filename, bool isCritical);
-
+	static void _write(char* filename, char* data, bool isCritical);
 
 
 };

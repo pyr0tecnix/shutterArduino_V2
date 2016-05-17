@@ -1,6 +1,6 @@
 
 /*shutterSD.cpp
-Dernière modification : 01/05/16
+Dernière modification : 17/05/16
 © Patrice Vieyra - contact@magicofthings.fr
 
 Librairie ayant pour but de gérer la carte SD
@@ -28,7 +28,6 @@ Méthodes
   - String _read(char* filename, bool isCritical) : Méthode appelée par read_string et read_charArray pour lire le fichier filename
   le paramètre isCritical permet d'indiquer si l'opération est critique
   (en cas d'erreur on passe la LED de notification au rouge et on bloque l'éxecution du programme)
-
 */
 
 #include "shutterSD.h"
@@ -92,7 +91,7 @@ char* ShutterSD::read_charArray(char* filename, bool isCritical) {
   ShutterSerial::print("(ShutterSD) read_charArray", STACK, true);
   String data = _read(filename, isCritical);
 
-  char* retour = (char*) malloc((data.length() + 1) * sizeof(char));
+  char* retour = new char[data.length() + 1];
   data.toCharArray(retour, data.length() + 1);
   return retour;
 }
@@ -108,9 +107,10 @@ String ShutterSD::_read(char* filename, bool isCritical) {
     /*On lit le fichier par paquet de 512 octets*/
     char _buffer[BUFFERSIZE];
     while((size = _file.read(_buffer, sizeof(_buffer))) > 0) {
-      char* fitted_buffer = (char*)malloc( (size + 1) * sizeof(char)  );
+      char* fitted_buffer = new char[size];
       /*Permet de ne récupérer que la partie utile du buffer et pas l'intégralité*/
       sprintf(fitted_buffer, "%s", _buffer);
+      fitted_buffer[size] = (char)0;
       ShutterSerial::print("Buffer ", DEBUG, false);
       ShutterSerial::print(size, DEBUG, false);
       ShutterSerial::print(" octets : ", DEBUG, true);
@@ -136,7 +136,10 @@ String ShutterSD::_read(char* filename, bool isCritical) {
 
 
 void ShutterSD::write(char* filename, char* data, bool isCritical) {
-  ShutterSerial::print("(ShutterSD) write", STACK, true);
+  ShutterSerial::print("(ShutterSD) write (char*)", STACK, true);
+  ShutterSerial::print(data, DEBUG, true);
+  ShutterSerial::print(strlen(data), DEBUG, true);
+
   if(_file.open(&_root, filename, O_WRITE | O_CREAT)) {
     _file.write(data, strlen(data));
     _file.close();
@@ -155,24 +158,12 @@ void ShutterSD::write(char* filename, char* data, bool isCritical) {
 }
 
 void ShutterSD::write(char* filename, String data, bool isCritical) {
-  ShutterSerial::print("(ShutterSD) write", STACK, true);
-  if(_file.open(&_root, filename, O_WRITE | O_CREAT)) {
-    char* data_char = (char*)malloc( (data.length() + 1) * sizeof(char)  );
-    data.toCharArray(data_char, (data.length() + 1));
-    ShutterSerial::print("Ecriture de : ", DEBUG, true);
-    ShutterSerial::print(data_char, DEBUG, true);
-    _file.write(data_char, strlen(data_char));
-    _file.close();
-  }
-  else {
-    ShutterSerial::print("Erreur d'écriture du fichier ", ERROR, false);
-    ShutterSerial::print(filename, ERROR, true);
-    if(isCritical) {
-      ShutterLED::setCouleur(RED);
-      while(1);
-    }
-    else {
-      ShutterLED::setCouleur(BLUE);
-    }
-  }
+  ShutterSerial::print("(ShutterSD) write (String)", STACK, true);
+  char* data_char = new char[data.length() + 1];
+  data.toCharArray(data_char, data.length() + 1);
+  data_char[strlen(data_char)] = (char)0;
+  ShutterSerial::print(data_char, DEBUG, true);
+  ShutterSerial::print(data.length(), DEBUG, true);
+
+  write(filename, data_char, isCritical);
 }
