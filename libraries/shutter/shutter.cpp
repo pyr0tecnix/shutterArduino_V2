@@ -1,6 +1,6 @@
 /*
 shutter.cpp
-Dernière modification : 03/05/16
+Dernière modification : 18/05/16
 © Patrice Vieyra - contact@magicofthings.fr
 
 Librairie contenant l'application shutter
@@ -43,10 +43,15 @@ void Shutter::init() {
 	ShutterLED::init();
 	/*Initialisation de la carte SD et stockage de l'état*/
 	ShutterCommande::statutService[SERVICESD] = ShutterSD::init();
+
 	/*S'il y a une erreur on bloque l'exécution*/
 	if(!ShutterCommande::statutService[SERVICESD]){
 		while(1);
 	}
+	ShutterSerial::print("Activation du log des commandes INFO et ERROR dans le fichier log.txt ", INFO, true);
+	/*On supprime le fichier de log s'il existe.*/
+	ShutterSD::_file.remove(&ShutterSD::_root, "log.txt");
+
 	/*Lecture de la configuration*/
 	ShutterJSON::setConfig(ShutterJSON::decode(ShutterSD::read_charArray("config.txt", true), true));
 	/*Redéfinition du degré de verbosité*/
@@ -64,6 +69,9 @@ void Shutter::init() {
 		/*Initialisation de l'OSC et stockage de l'état*/
 		ShutterCommande::statutService[SERVICEOSC] = ShutterOSC::init(ShutterConfig::getMasterOscIp(), ShutterConfig::getMasterOscPort(), ShutterConfig::getShutterOscIp(), ShutterConfig::getShutterOscPort(), ShutterConfig::getShutterOscMac());
 		if(!ShutterCommande::statutService[SERVICEOSC]){
+			ShutterSerial::print("Ecriture de l'historique de commande dans log.txt", INFO, true);
+			ShutterSD::write("log.txt", ShutterSerial::_historique, false);
+			ShutterSerial::_compteur = 0;
 			while(1);
 		}
 		/*Initialisation du protocole Bonjour/Zeroconf et stockage de l'état*/
@@ -100,5 +108,13 @@ void Shutter::run() {
 	}
 	if(ShutterConfig::getShutterHTTPServerActivate()) {
 		ShutterWebserver::run();
+	}
+	/*Stockage de l'historique de commande dans un fichier log.txt*/
+	if(ShutterSerial::_compteur >= ShutterSerial::_history_size - 5) {
+		ShutterSerial::print("Ecriture de l'historique de commande dans log.txt", INFO, true);
+		ShutterSD::write("log.txt", ShutterSerial::_historique, false);
+		ShutterSerial::_compteur = 0;
+	// 	TODO :  On pourra éventuellement créer un compteur de lecture pour ne pas
+	//					afficher les informations en double dans le serveur web
 	}
 }

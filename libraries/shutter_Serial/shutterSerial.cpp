@@ -1,10 +1,9 @@
-/*shutterSerial.h
-Dernière modification : 28/04/16
+/*shutterSerial.cpp
+Dernière modification : 18/05/16
 © Patrice Vieyra - contact@magicofthings.fr
 
 Librairie ayant pour but de gérer l'affichage sur le port série.
 Le degré de verbosité des messages est règlable (ERROR, INFO, STACK, DEBUG).
-
 
 Méthodes
   Publiques
@@ -18,13 +17,16 @@ Méthodes
         INFO -> Information sur l'état courant du système. Niveau par défaut
         STACK -> Permet de suivre la stack en afifchant l'intégralité des appels de fonctions
         DEBUG -> Affiche tout les messages
-    - unsigned int getVerboseLevel() : Permet de récupérer le niveau de verbosité :
-
+    - unsigned int getVerboseLevel() : Permet de récupérer le niveau de verbosité
     - void print(Var msg, int level, bool crlf) : Méthode d'affichage à l'écran.
         Trois surcharges existent pour des messages de type String, char* et int.
         Le paramètre level représente le type de message (ERROR, INFO, STACK ou DEBUG)
         le booléen crlf lorsqu'il est à true ajoute un saut de ligne après le message
-
+    - void historique_reset() : Remet à 0 le compteur de message
+    - void historique_print() : Envoie le contenu de l'historique sur le port série
+    - void historique_put (char* nouveau) : Ajoute le message nouveau à l'historique
+    - char* intToCharArray(int value, bool crlf) : Convertit un int en chaîne de caractère
+        le booléen crlf lorsqu'il est à true ajoute un saut de ligne après le message
 */
 
 #include "shutterSerial.h"
@@ -34,9 +36,9 @@ ShutterSerial::ShutterSerial() {}
 /*Initialisation du niveau de verbosité à INFO*/
 Level ShutterSerial::_verbosite = INFO;
 
-char ShutterSerial::_historique[_history_size][DATASIZE];
+char ShutterSerial::_historique[_history_size][256];
 unsigned int ShutterSerial::_compteur = 0;
-char temp[DATASIZE];
+char temp[256];
 char convertedValue[10];
 
 
@@ -112,7 +114,6 @@ void ShutterSerial::print(char* msg, int level, bool crlf) {
 
 
 /*Manipulation de l'historique*/
-
 void ShutterSerial::historique_reset() {
   _compteur = 0;
 }
@@ -120,6 +121,8 @@ void ShutterSerial::historique_reset() {
 void ShutterSerial::historique_put(char* nouveau) {
   sprintf(_historique[_compteur], "%s", nouveau);
   _compteur = (_compteur + 1)%_history_size;
+  Serial.print("Compteur : ");
+  Serial.println(_compteur);
 }
 
 void ShutterSerial::historique_print() {

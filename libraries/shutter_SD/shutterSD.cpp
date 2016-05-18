@@ -168,11 +168,11 @@ void ShutterSD::write(char* filename, String data, bool isCritical) {
   write(filename, data_char, isCritical);
 }
 
-void ShutterSD::write(char* filename, char* data[], bool isCritical) {
+void ShutterSD::write(char* filename, char data[][ShutterSerial::_data_size], bool isCritical) {
   ShutterSerial::print("(ShutterSD) write (char**)", STACK, true);
-  if(_file.open(&_root, filename, O_WRITE | O_CREAT)) {
+  if(_file.open(&_root, filename, O_CREAT | O_APPEND | O_WRITE )) {
     int cpt = 0;
-    for(cpt = 0; cpt < sizeof(data); cpt++) {
+    for(cpt = 0; cpt < ShutterSerial::_compteur; cpt++) {
       _file.write(data[cpt], strlen(data[cpt]));
     }
     _file.close();

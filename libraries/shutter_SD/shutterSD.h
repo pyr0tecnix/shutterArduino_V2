@@ -71,7 +71,7 @@ public:
 	static String read_string(char* filename, bool isCritical);
 	static void write(char* filename, char* data, bool isCritical);
 	static void write(char* filename, String data, bool isCritical);
-	static void write(char* filename, char* data[], bool isCritical);
+	static void write(char* filename, char data[][ShutterSerial::_data_size], bool isCritical);
 
 	static SdFile _file;
 	static SdFile _root;

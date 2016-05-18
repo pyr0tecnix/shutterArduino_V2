@@ -5,7 +5,6 @@ Dernière modification : 28/04/16
 Librairie ayant pour but de gérer l'affichage sur le port série.
 Le degré de verbosité des messages est règlable (ERROR, INFO, STACK, DEBUG).
 
-
 Méthodes
   Publiques
 
@@ -18,16 +17,28 @@ Méthodes
         INFO -> Information sur l'état courant du système. Niveau par défaut
         STACK -> Permet de suivre la stack en afifchant l'intégralité des appels de fonctions
         DEBUG -> Affiche tout les messages
-    - unsigned int getVerboseLevel() : Permet de récupérer le niveau de verbosité :
-
+    - unsigned int getVerboseLevel() : Permet de récupérer le niveau de verbosité
     - void print(Var msg, int level, bool crlf) : Méthode d'affichage à l'écran.
         Trois surcharges existent pour des messages de type String, char* et int.
         Le paramètre level représente le type de message (ERROR, INFO, STACK ou DEBUG)
         le booléen crlf lorsqu'il est à true ajoute un saut de ligne après le message
+    - void historique_reset() : Remet à 0 le compteur de message
+    - void historique_print() : Envoie le contenu de l'historique sur le port série
+    - void historique_put (char* nouveau) : Ajoute le message nouveau à l'historique
+    - char* intToCharArray(int value, bool crlf) : Convertit un int en chaîne de caractère
+        le booléen crlf lorsqu'il est à true ajoute un saut de ligne après le message
 
 Attributs
-  Privés
 
+  Publics
+    - const unsigned int _history_size : Nombre de messages maximum que peux contenir l'historique.
+        Sachant que chaque appel à print compte pour un message et que seul les messages de niveau
+        ERROR et INFO sont stockés
+    - const unsigned int _data_size : Taille maximale des chaînes de caractères contenues par l'historique.
+        Si vous souhaitez modifier cette valeur n'oubliez pas de modifier aussi la ligne 73 : static char _historique[][256]
+    - char _historique[][] : Tableau de chaînes de caractères contenant les _history_size derniers messages de niveau ERROR et INFO.
+    _ unsigned int _compteur : Contient le nombre de message actuellement contenu par l'historique
+  Privés
     - Level _level : Variable contenant le niveau de verbosité actuel. Peut être
         modifié grâce à setVerboseLevel et récupéré grâce à getVerboseLevel.
 */
@@ -36,8 +47,6 @@ Attributs
 #define shutterSerial
 
 #include <SPI.h>
-
-#define DATASIZE 256
 
 enum Level {
   ERROR,
@@ -61,16 +70,19 @@ class ShutterSerial {
     static void print(int msg, int level, bool crlf);
     static void print(char* msg, int level, bool crlf);
 
+    static const unsigned int _history_size = 60;
+    static const unsigned int _data_size = 256;
+
     static void historique_reset();
-    /*Historique des messages séries. On ne conserve que les messages d'INFO et d'ERROR*/
-    static char _historique[][DATASIZE];
+    /*Historique des messages séries. On ne conserve que les messages d'INFO et d'ERROR
+    La valeur contenue dans le second [] correspond à la valeur de _data_size */
+    static char _historique[][256];
     static void historique_put(char* nouveau);
     static void historique_print();
     static unsigned int _compteur;
 
     static char* intToCharArray(int value, bool crlf);
 
-    static const unsigned int _history_size = 60;
   private:
     static Level _verbosite;
 
