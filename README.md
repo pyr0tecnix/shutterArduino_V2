@@ -37,17 +37,24 @@ Certaines librairies du projet ont besoin de bibliothèques externes pour foncti
 * La LED de notification utilisée est une LED RVB à anode commune. L'anode est à connectée sur le 3.3V de l'arduino et les cathodes R, V et B sont à brancher respectivement sur les pins 11, 12 et 13 de l'arduino.
 * Les servomoteurs sont à brancher sur les pins 2, 3, 6 et 7 et sur le 5V et le GND de l'arduino.
 
-## Mise en route ##
+## Mise en route
 
 * Connecter le câble ethernet
 * Vérifier que la carte SD est bien insérée et contient bien le fichier de configuration **"config.txt"**
 * Brancher l’alimentation du shutter
-* A la fin de l'initialisation la LED de notification clignote une fois
+* A la fin de l'initialisation la LED de notification est verte et clignote une fois
 * Il est possible de brancher un câble USB pour avoir les informations de débug par liaison série (115200 baud)
 
-## Lire les retours série de l'arduino ##
+## Code couleur de la LED de notification 
 
-### Linux et Mac Os ###
+La LED de notification est soit : 
+* rouge : Il y a eu une erreur critique qui empêche l'exécution normale du programme. Typiquement une erreur au niveau de la carte SD ou du réseau. Le système se bloque, vous trouverez plus d'informations en branchant un câble USB pour lire le retour série ou consulter le fichier log.txt sur la carte SD.
+* bleu : Il y a eu une erreur mais non critique. Le programme continue son exécution. Typiquement une erreur dans le protocole Bonjour ou une erreur de lecture / écriture de fichiers non critique. Vous trouverez plus d'information en branchant un câble USB ou encore sur la partie console du webserver ou dans le fichier log.txt sur la carte SD.
+* vert : Tout va bien, le système fonctionne correctement.
+
+## Lire les retours série de l'arduino
+
+### Linux et Mac Os
 
 Utiliser la commande `screen` qui est installée par défaut sur les versions récentes de Mac OS et certaines distributions de Linux.
 
