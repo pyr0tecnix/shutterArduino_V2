@@ -33,6 +33,33 @@ Certaines librairies du projet ont besoin de bibliothèques externes pour foncti
 * LED :
 	* [LED RVB à anode commune](http://boutique.semageek.com/fr/62-led-rgb-transparente-5mm.html)
 
+## Liste de course recommandée
+
+* Arduino : Arduino M0 (ou zero) Pro
+	* Recommandé (le petit frère du Pro qui n'embarque pas de puce de débug) [semageek](http://boutique.semageek.com/fr/574-arduino-m0-8058333491806.html)
+	* Sur [selectronic](http://www.selectronic.fr/carte-arduino-zero-pro.html)
+	* Sur [lextronic](http://www.lextronic.fr/P35395-arduino-m0-pro.html)
+
+* Shield Ethernet :
+	* Sur [Amazon](https://www.amazon.fr/Neuftech%C2%AE-Ethernet-Shield-Module-Arduino/dp/B00PQA6G8O)
+
+* Servomoteur : J'utilise des SG90, à vous de voir en fonction de vos besoins en terme de couple, de vitesse et d'angle de rotation. A noter que les servomoteurs sont alimentés par le 5V de l'arduino, si vous voulez utiliser des servomoteurs plus puissant il faudra passer sur une alimentation extérieure. De plus le boîtier servomoteur est conçu pour la forme des SG90
+	* Sur [semageek](http://boutique.semageek.com/fr/104-micro-servo-tower-pro-sg90.html)
+
+* Led RGB : (A anode commune)
+	* Sur [Semageek](http://boutique.semageek.com/fr/62-led-rgb-transparente-5mm.html)
+
+* Embase ethernet : pour les boîtier (4 pour le boîtier principal et 1 par boîtier servomoteur) :
+	* Sur [gotronic](http://www.gotronic.fr/art-embase-ci-srt8-8b-4924.htm)
+
+* Des fils pour les connexions (privilégier le multi-brins) :
+	* Sur [gotronix](http://www.gotronic.fr/art-assortiment-fcs60-5211.htm)
+	* Sur [selectronic](http://www.selectronic.fr/assortiment-de-fil-de-cablage-0-2mm-mono-brin.html)
+
+* Bloc d'alimentation :
+	* Sur [semageek](http://boutique.semageek.com/fr/370-alimentation-arduino-9v-660ma-jack-21mm.html)
+	* Sur [amazon](https://www.amazon.fr/Aukru-Universel-Alimentation-adaptateur-chargeur/dp/B00MVLJ6NI)
+
 ## Câblage ##
 * La LED de notification utilisée est une LED RVB à anode commune. L'anode est à connectée sur le 3.3V de l'arduino et les cathodes R, V et B sont à brancher respectivement sur les pins 11, 12 et 13 de l'arduino.
 * Les servomoteurs sont à brancher sur les pins 2, 3, 6 et 7 et sur le 5V et le GND de l'arduino.
@@ -45,9 +72,9 @@ Certaines librairies du projet ont besoin de bibliothèques externes pour foncti
 * A la fin de l'initialisation la LED de notification est verte et clignote une fois
 * Il est possible de brancher un câble USB pour avoir les informations de débug par liaison série (115200 baud)
 
-## Code couleur de la LED de notification 
+## Code couleur de la LED de notification
 
-La LED de notification est soit : 
+La LED de notification est soit :
 * rouge : Il y a eu une erreur critique qui empêche l'exécution normale du programme. Typiquement une erreur au niveau de la carte SD ou du réseau. Le système se bloque, vous trouverez plus d'informations en branchant un câble USB pour lire le retour série ou consulter le fichier log.txt sur la carte SD.
 * bleu : Il y a eu une erreur mais non critique. Le programme continue son exécution. Typiquement une erreur dans le protocole Bonjour ou une erreur de lecture / écriture de fichiers non critique. Vous trouverez plus d'information en branchant un câble USB ou encore sur la partie console du webserver ou dans le fichier log.txt sur la carte SD.
 * vert : Tout va bien, le système fonctionne correctement.
